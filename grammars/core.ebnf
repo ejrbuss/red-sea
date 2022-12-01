@@ -1,0 +1,78 @@
+program
+	= { pdeclarations }
+
+declarations
+	= declare_import
+	| declare_variable
+	| declare_procedure
+
+declare_import
+	= "import" name [ "as" IDENTIFIER ]
+
+declare_variable
+	= [ "export" ] "var" IDENTIFIER ":" IDENTIFIER "=" literal
+
+declare_procedure
+	= [ "export" ] "proc" IDENTIFIER "(" parameters ")" -> IDENTIFIER "{" statements "}"
+
+parameters
+	| parameter { "," parameter } [ "," ]
+	= ""
+
+parameter
+	= IDENTIFIER ":" IDENTIFIER
+
+statements
+	= variable_statement
+	| assignment_statement
+	| do_statement
+	| if_statement
+	| loop_statement
+	| break_statement
+	| continue_statement
+	| return_statement
+	| expression
+
+variable_statement
+	= "var" IDENTIFIER ":" type "=" expression
+
+assignment_statement
+	= IDENTIFIER "=" expression
+
+do_statement
+	= [ LABEL ] "do" "{" statements "}"
+
+if_statement
+	| "if" expression "{" statements "}" [ "else" else_clause ]
+
+else_clause
+	= if_statement
+	| "{" statements "}"
+
+loop_statement
+	= [ LABEL ] "loop" "{" statements "}"
+
+break_statement
+	= "break" [ LABEL ]
+
+continue_statement
+	= "continue [ LABEL ]
+
+return_statement
+	= "return" expression
+
+expression
+	= "(" expression ")"
+	| name [ "(" arguments ")" ]
+	| literal
+
+arguments
+	= expression { "," expression } [ "," ]
+	| ""
+
+name
+	= IDENTIFIER { "." IDENTIFIER }
+
+literal
+	= INT_LITERAL
+	| FLOAT_LITERAL
